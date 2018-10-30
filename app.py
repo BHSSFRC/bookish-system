@@ -4,8 +4,10 @@ from camera_opencv import Camera
 import os
 from flask import Flask, redirect, render_template, Response, send_from_directory
 from disc import d as discerd
+from inout_blueprint import in_page
 
 app = Flask(__name__)
+app.register_blueprint(in_page)
 
 
 @app.route("/")
@@ -34,25 +36,6 @@ def favicon():
 @app.template_filter()
 def int_to_hexcolor(i) -> str:
     return "#" + (hex(i)[2:] if i != 0 else "FFFFFF")
-
-
-@app.route("/d_test")
-def discord_test():
-    barcodes = cv_processing.scan_barcodes(Camera().get_frame()[1])
-    if barcodes is not None and len(barcodes) >= 1:
-        d_id = barcodes[0].data.decode("utf-8")
-        user = discerd.get_guild_member(286174293006745601, d_id)
-        r = [discerd.get_guild_role(286174293006745601, role) for role in user["roles"]]
-        return render_template(
-            "discord.html",
-            nick=user["nick"],
-            username=user["user"]["username"],
-            discrim=user["user"]["discriminator"],
-            roles=r,
-            pfp=discerd.get_pfp_url(d_id),
-        )
-    else:
-        return redirect("/")
 
 
 if __name__ == "__main__":
