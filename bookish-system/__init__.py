@@ -3,7 +3,7 @@ from .camera_opencv import Camera
 import os
 from flask import Flask, redirect, render_template, Response, send_from_directory
 from .disc import d as discerd
-from .inout_blueprint import in_page
+from .blueprints.clocker.inout_blueprint import in_page
 
 app = Flask(__name__.split(".")[0])
 app.register_blueprint(in_page)

@@ -5,7 +5,7 @@
 {% endblock %}
 {% block title %}Confirm user{% endblock %}
 {% block body %}
-<h1>You are:</h1>
+<h1>Are you...</h1>
 <div id="card">
   <img src="{{ pfp }}" align="left" id="cardimg">
   <div id="cardcontent">
@@ -20,5 +20,5 @@
     {% endfor %}
   </div>
 </div>
-<input type="button" onclick="location.href=`/clock/{{ discord_id }}`;" value="Clock in/out">
+<input type="button" onclick="location.href=`/clock/{{ discord_id }}`;" value="Yep, that's me">
 {% endblock %}

@@ -1,7 +1,10 @@
+<!-- If you're viewing this in a browser: the following HTML was automatically generated from -->
+<!-- at least two Jinja2 templates. It will be messy. Sorry. -->
 <!DOCTYPE html>
 <html>
     <head>
         {% block head %}
+        <link rel="stylesheet" href="{{ url_for('static', filename='index.css') }}">
         <title>{% block title %}{% endblock %}</title>
         {% endblock %}
     </head>

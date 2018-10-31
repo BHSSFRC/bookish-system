@@ -16,5 +16,6 @@
     display: inline-block;
     margin: 2px auto;
     padding: 1px 5px 1px 4px;
-    border-radius: 12px;
+    /* hack: setting border-radius to something absurd results in 100% perfect circle ends */
+    border-radius: 999px;
 }

@@ -1,7 +1,7 @@
-from .camera_opencv import Camera
-from . import cv_processing
+from ...camera_opencv import Camera
+from ... import cv_processing
 from datetime import timedelta
-from .disc import d as discerd
+from ...disc import d as discerd
 from flask import Blueprint, render_template, redirect
 import time
 
