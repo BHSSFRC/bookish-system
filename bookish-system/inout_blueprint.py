@@ -40,16 +40,3 @@ def clock(user: int):
         # clocking in
         clock_state[user] = time.time()
         return "Clocked in"
-
-
-@in_page.route("/clockin/<int:user>")
-def clock_in(user: int):
-    """clock in user via d id"""
-    clock_state[user] = time.time()
-
-
-@in_page.route("/clockout/<int:user>")
-def clock_out(user: int):
-    """clock out user via d id"""
-    time_in = clock_state[user]
-    total = timedelta(seconds=time.time() - time_in)
