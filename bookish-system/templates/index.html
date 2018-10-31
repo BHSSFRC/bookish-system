@@ -1,0 +1,9 @@
+{% extends "blank_page.html" %}
+{% block title %}Scanner{% endblock %}
+{% block body %}
+    <h1>Please present your ID</h1>
+    <p>Click "Sign in" when the blue box appears around the QR code.
+        <input type="button" onclick="location.href=`{{ url_for('in_page.discord_test') }}`;" value="Sign in">
+        <img src="{{ url_for('feed') }}">
+    </p>
+{% endblock %}

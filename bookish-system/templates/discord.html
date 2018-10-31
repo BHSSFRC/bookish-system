@@ -1,0 +1,24 @@
+{% extends "blank_page.html" %}
+{% block head %}
+{{ super() }}
+<link rel="stylesheet" href="{{ url_for('static', filename='disc.css') }}">
+{% endblock %}
+{% block title %}Confirm user{% endblock %}
+{% block body %}
+<h1>You are:</h1>
+<div id="card">
+  <img src="{{ pfp }}" align="left" id="cardimg">
+  <div id="cardcontent">
+    {% if nick is not none %}
+    <strong>Nick:</strong> {{ nick }}<br>
+    {% else %}
+    <!-- This user has no nickname --> 
+    {% endif %}
+    <strong>Tag:</strong> @{{ username }}#{{ discrim }}<br>
+    {% for role in roles %}
+    <span class="roleitem" style="border: 2px solid {{ role['color']|int_to_hexcolor }};"><span style="color: {{ role['color']|int_to_hexcolor }};">&#9679;</span> {{ role["name"] }}</span>
+    {% endfor %}
+  </div>
+</div>
+<input type="button" onclick="location.href=`/clock/{{ discord_id }}`;" value="Clock in/out">
+{% endblock %}

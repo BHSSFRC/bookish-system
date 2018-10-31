@@ -1,12 +1,11 @@
-import asyncio
-import cv_processing
-from camera_opencv import Camera
+from . import cv_processing
+from .camera_opencv import Camera
 import os
 from flask import Flask, redirect, render_template, Response, send_from_directory
-from disc import d as discerd
-from inout_blueprint import in_page
+from .disc import d as discerd
+from .inout_blueprint import in_page
 
-app = Flask(__name__)
+app = Flask(__name__.split(".")[0])
 app.register_blueprint(in_page)
 
 
@@ -36,7 +35,3 @@ def favicon():
 @app.template_filter()
 def int_to_hexcolor(i) -> str:
     return "#" + (hex(i)[2:] if i != 0 else "FFFFFF")
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0")
