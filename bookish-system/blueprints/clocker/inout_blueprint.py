@@ -2,11 +2,16 @@ from ...camera_opencv import Camera
 from ... import cv_processing
 from datetime import timedelta
 from ...disc import d as discerd
+from ...disc import config
 from flask import Blueprint, render_template, redirect
+import psycopg2
 import time
 
-in_page = Blueprint("in_page", __name__, template_folder="templates")
+in_page = Blueprint(
+    "in_page", __name__, template_folder="templates", static_folder="static"
+)
 clock_state = {}
+db_connection = psycopg2.connect(**config.postgresql)
 
 
 @in_page.route("/confirm_user")
@@ -35,6 +40,13 @@ def clock(user: int):
         # clocking out
         total = timedelta(seconds=time.time() - clock_state[user])
         del clock_state[user]
+        cur = db_connection.cursor()
+        cur.execute(
+            """INSERT INTO timetable (member, seconds) VALUES (%(mem)s, %(time)s) ON CONFLICT (member) DO UPDATE SET seconds = timetable.seconds + %(time)s""",
+            {"mem": user, "time": total.total_seconds()},
+        )
+        db_connection.commit()
+        cur.close()
         return str(total)
     else:
         # clocking in
