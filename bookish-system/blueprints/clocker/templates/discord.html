@@ -1,7 +1,7 @@
 {% extends "blank_page.html" %}
 {% block head %}
 {{ super() }}
-<link rel="stylesheet" href="{{ url_for('static', filename='disc.css') }}">
+<link rel="stylesheet" href="{{ url_for('.static', filename='disc.css') }}">
 {% endblock %}
 {% block title %}Confirm user{% endblock %}
 {% block body %}
@@ -20,5 +20,5 @@
     {% endfor %}
   </div>
 </div>
-<input type="button" onclick="location.href=`/clock/{{ discord_id }}`;" value="Yep, that's me">
+<input type="button" onclick="location.href=`{{ url_for('.clock', user=discord_id) }}`;" value="Yep, that's me">
 {% endblock %}
