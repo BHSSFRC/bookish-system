@@ -1,0 +1,18 @@
+{% extends "blank_page.html" %}
+{% block head %}
+{{ super() }}
+<script>
+    function redir() {
+        setTimeout(function() {
+            window.location.replace("/")
+        }, 5000)
+    }
+    window.addEventListener('load', redir);
+</script>
+{% endblock %}
+{% block title %}You are now clocked in{% endblock %}
+{% block body %}
+<p>
+    You are now clocked in. <strong>You may now remove your ID.</strong> Please allow five (5) seconds to redirect, or click <a href="/">here...</a>
+</p>
+{% endblock %}

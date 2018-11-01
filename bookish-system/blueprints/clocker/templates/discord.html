@@ -9,16 +9,17 @@
 <div id="card">
   <img src="{{ pfp }}" align="left" id="cardimg">
   <div id="cardcontent">
-    {% if nick is not none %}
-    <strong>Nick:</strong> {{ nick }}<br>
+    {% if user['nick'] is not none %}
+    <strong>Nick:</strong> {{ user['nick'] }}<br>
     {% else %}
     <!-- This user has no nickname --> 
     {% endif %}
-    <strong>Tag:</strong> @{{ username }}#{{ discrim }}<br>
+    <strong>Tag:</strong> @{{ user['user']['username'] }}#{{ user['user']['discriminator'] }}<br>
     {% for role in roles %}
     <span class="roleitem" style="border: 2px solid {{ role['color']|int_to_hexcolor }};"><span style="color: {{ role['color']|int_to_hexcolor }};">&#9679;</span> {{ role["name"] }}</span>
-    {% endfor %}
+    {% endfor %}<br>You have {{ recorded_hours|round(2, "floor") }} hours on record.
   </div>
 </div>
 <input type="button" onclick="location.href=`{{ url_for('.clock', user=discord_id) }}`;" value="Yep, that's me">
+<input type="button" onclick="location.href='/';" value="Not at all">
 {% endblock %}

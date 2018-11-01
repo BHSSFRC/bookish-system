@@ -14,21 +14,28 @@ clock_state = {}
 db_connection = psycopg2.connect(**config.postgresql)
 
 
+@in_page.route("/return_home")
+def return_home():
+    return redirect("/")
+
+
 @in_page.route("/confirm_user")
 def discord_test():
     barcodes = cv_processing.scan_barcodes(Camera().get_frame()[1])
     if barcodes is not None and len(barcodes) >= 1:
         d_id = barcodes[0].data.decode("utf-8")
-        user = discerd.get_guild_member(286174293006745601, d_id)
-        r = [discerd.get_guild_role(286174293006745601, role) for role in user["roles"]]
+        user_ = discerd.get_guild_member(config.GUILD_ID, d_id)
+        r = [discerd.get_guild_role(config.GUILD_ID, role) for role in user["roles"]]
+        total_hours = (
+            get_total_time(d_id)[1] / 3600 if get_total_time(d_id) is not None else 0
+        )
         return render_template(
             "discord.html",
             discord_id=d_id,
-            nick=user["nick"],
-            username=user["user"]["username"],
-            discrim=user["user"]["discriminator"],
+            user=user_,
             roles=r,
             pfp=discerd.get_pfp_url(d_id),
+            recorded_hours=total_hours,
         )
     else:
         return redirect("/")
@@ -51,4 +58,12 @@ def clock(user: int):
     else:
         # clocking in
         clock_state[user] = time.time()
-        return "Clocked in"
+        return render_template("in.html")
+
+
+def get_total_time(user: int) -> float:
+    cur = db_connection.cursor()
+    cur.execute("""SELECT * FROM timetable WHERE member = %s""", (user,))
+    ret = cur.fetchone()
+    cur.close()
+    return ret
