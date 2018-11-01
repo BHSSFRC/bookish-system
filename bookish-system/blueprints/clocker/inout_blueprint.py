@@ -15,6 +15,7 @@ db_connection = psycopg2.connect(**config.postgresql)
 
 
 @in_page.route("/return_home")
+@in_page.route("/")
 def return_home():
     return redirect("/")
 
