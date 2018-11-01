@@ -23,19 +23,20 @@ def return_home():
 def discord_test():
     barcodes = cv_processing.scan_barcodes(Camera().get_frame()[1])
     if barcodes is not None and len(barcodes) >= 1:
-        d_id = barcodes[0].data.decode("utf-8")
+        d_id = int(barcodes[0].data.decode("utf-8"))
         user_ = discerd.get_guild_member(config.GUILD_ID, d_id)
-        r = [discerd.get_guild_role(config.GUILD_ID, role) for role in user["roles"]]
+        r = [discerd.get_guild_role(config.GUILD_ID, role) for role in user_["roles"]]
         total_hours = (
             get_total_time(d_id)[1] / 3600 if get_total_time(d_id) is not None else 0
         )
+        print(d_id in clock_state.keys())
         return render_template(
             "discord.html",
-            discord_id=d_id,
             user=user_,
             roles=r,
             pfp=discerd.get_pfp_url(d_id),
             recorded_hours=total_hours,
+            currently_in=d_id in clock_state.keys(),
         )
     else:
         return redirect("/")
