@@ -6,7 +6,7 @@ from .disc import d as discerd
 from .blueprints.clocker.inout_blueprint import in_page
 
 app = Flask(__name__.split(".")[0])
-app.register_blueprint(in_page)
+app.register_blueprint(in_page, url_prefix="/tick_tock")
 
 
 @app.route("/")
