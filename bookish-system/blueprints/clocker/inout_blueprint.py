@@ -30,7 +30,6 @@ def discord_test():
         total_hours = (
             get_total_time(d_id)[1] / 3600 if get_total_time(d_id) is not None else 0
         )
-        print(d_id in clock_state.keys())
         return render_template(
             "discord.html",
             user=user_,
