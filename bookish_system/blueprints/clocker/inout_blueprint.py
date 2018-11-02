@@ -1,8 +1,8 @@
-from ...camera_opencv import Camera
-from ... import cv_processing
+from bookish_system.camera_opencv import Camera
+from bookish_system import cv_processing
 from datetime import timedelta
-from ...disc import d as discerd
-from ...disc import config
+from bookish_system.disc import d as discerd
+from bookish_system.disc import config
 from flask import Blueprint, render_template, redirect
 import psycopg2
 import time
