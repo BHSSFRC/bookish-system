@@ -36,7 +36,7 @@ def discord_test():
             user=user_,
             roles=r,
             pfp=discerd.get_pfp_url(d_id),
-            recorded_hours=total_hours,
+            recorded_hours=round(total_hours, 2),
             currently_in=d_id in clock_state.keys(),
         )
     else:
@@ -57,7 +57,9 @@ def clock(user: int):
         db_connection.commit()
         cur.close()
         return render_template(
-            "in_and_out.html", direction="out", deltah=total.total_seconds() / 3600
+            "in_and_out.html",
+            direction="out",
+            deltah=round(total.total_seconds() / 3600.0, 2),
         )
     else:
         # clocking in

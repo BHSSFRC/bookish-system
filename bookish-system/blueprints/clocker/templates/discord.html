@@ -17,7 +17,7 @@
     <strong>Tag:</strong> @{{ user['user']['username'] }}#{{ user['user']['discriminator'] }}<br>
     {% for role in roles %}
     <span class="roleitem" style="border: 2px solid {{ role['color']|int_to_hexcolor }};"><span style="color: {{ role['color']|int_to_hexcolor }};">&#9679;</span> {{ role["name"] }}</span>
-    {% endfor %}<br>You have {{ recorded_hours|round(2, "floor") }} hours on record.
+    {% endfor %}<br>You have {{ recorded_hours }} hours on record.
     {% if currently_in %}
     You are currently <strong>clocked in.</strong>
     {% endif %}
