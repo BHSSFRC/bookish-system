@@ -23,6 +23,11 @@
     {% endif %}
   </div>
 </div>
-<input type="button" onclick="location.href=`{{ url_for('.clock', user=user['user']['id']) }}`;" value="Yep, that's me">
+{% if currently_in %}
+<input type="button" onclick="location.href=`{{ url_for('.clock', user=user['user']['id']) }}`;" value="Yes, and I am CLOCKING OUT.">
+<input type="button" onclick="location.href='/';" value="Yes, but I am NOT clocking out.">
+{% else %}
+<input type="button" onclick="location.href=`{{ url_for('.clock', user=user['user']['id']) }}`;" value="Yes, I am clocking in.">
+{% endif %}
 <input type="button" onclick="location.href='/';" value="Not at all">
 {% endblock %}
