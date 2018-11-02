@@ -23,7 +23,6 @@ def gen(c):
 @app.route("/video_feed")
 def feed():
     """Streaming route (img src)"""
-    # g = cv_processing.gen_debugs_responses(Camera.frames()[1])
     return Response(gen(Camera()), mimetype="multipart/x-mixed-replace; boundary=frame")
 
 
