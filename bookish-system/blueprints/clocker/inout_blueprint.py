@@ -56,11 +56,13 @@ def clock(user: int):
         )
         db_connection.commit()
         cur.close()
-        return str(total)
+        return render_template(
+            "in_and_out.html", direction="out", deltah=total.total_seconds() / 3600
+        )
     else:
         # clocking in
         clock_state[user] = time.time()
-        return render_template("in.html")
+        return render_template("in_and_out.html", direction="in")
 
 
 def get_total_time(user: int) -> float:
