@@ -18,7 +18,10 @@ def get_total_time(user: int) -> float:
     cur.execute("""SELECT * FROM timetable WHERE member = %s""", (user,))
     ret = cur.fetchone()
     cur.close()
-    return ret[1]
+    if ret is not None:
+        return ret[1]
+    else:
+        return 0
 
 
 def save_clock(clock: dict):
