@@ -10,8 +10,37 @@ import time
 in_page = Blueprint(
     "in_page", __name__, template_folder="templates", static_folder="static"
 )
-clock_state = {}
 db_connection = psycopg2.connect(**config.postgresql)
+
+# utility functions
+def get_total_time(user: int) -> float:
+    cur = db_connection.cursor()
+    cur.execute("""SELECT * FROM timetable WHERE member = %s""", (user,))
+    ret = cur.fetchone()
+    cur.close()
+    return ret[1]
+
+
+def save_clock(clock: dict):
+    cur = db_connection.cursor()
+    cur.execute("""TRUNCATE timekeeper""")
+    for key, value in clock.items():
+        cur.execute(
+            """INSERT INTO timekeeper (member, time_in) VALUES (%(mem)s, %(timein)s) ON CONFLICT (member) DO UPDATE SET time_in = %(timein)s""",
+            {"mem": key, "timein": value},
+        )
+    db_connection.commit()
+    cur.close()
+
+
+def retrieve_clock() -> dict:
+    c = {}
+    cur = db_connection.cursor()
+    cur.execute("""SELECT * FROM timekeeper""")
+    for record in cur:
+        c[record[0]] = record[1]
+    cur.close()
+    return c
 
 
 @in_page.route("/return_home")
@@ -28,7 +57,7 @@ def discord_test():
         user_ = discerd.get_guild_member(config.GUILD_ID, d_id)
         r = [discerd.get_guild_role(config.GUILD_ID, role) for role in user_["roles"]]
         total_hours = (
-            get_total_time(d_id)[1] / 3600 if get_total_time(d_id) is not None else 0
+            get_total_time(d_id) / 3600 if get_total_time(d_id) is not None else 0
         )
         return render_template(
             "discord.html",
@@ -36,7 +65,7 @@ def discord_test():
             roles=r,
             pfp=discerd.get_pfp_url(d_id),
             recorded_hours=round(total_hours, 2),
-            currently_in=d_id in clock_state.keys(),
+            currently_in=d_id in retrieve_clock().keys(),
         )
     else:
         return redirect("/")
@@ -44,6 +73,7 @@ def discord_test():
 
 @in_page.route("/clock/<int:user>")
 def clock(user: int):
+    clock_state = retrieve_clock()
     if user in clock_state.keys():
         # clocking out
         total = timedelta(seconds=time.time() - clock_state[user])
@@ -55,6 +85,7 @@ def clock(user: int):
         )
         db_connection.commit()
         cur.close()
+        save_clock(clock_state)
         return render_template(
             "in_and_out.html",
             direction="out",
@@ -63,12 +94,5 @@ def clock(user: int):
     else:
         # clocking in
         clock_state[user] = time.time()
+        save_clock(clock_state)
         return render_template("in_and_out.html", direction="in")
-
-
-def get_total_time(user: int) -> float:
-    cur = db_connection.cursor()
-    cur.execute("""SELECT * FROM timetable WHERE member = %s""", (user,))
-    ret = cur.fetchone()
-    cur.close()
-    return ret
