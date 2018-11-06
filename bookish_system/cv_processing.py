@@ -12,10 +12,10 @@ def draw_debugs(frame):
     for bar in barcodes:
         (x, y, w, h) = bar.rect
         cv2.rectangle(frame, (x, y), (x + w, y + h), (172, 172, 0), 2)
-        text = "{} [{}]".format(bar.data.decode("utf-8"), bar.type)
-        cv2.putText(
-            frame, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (172, 172, 0), 2
-        )
+        # text = "{} [{}]".format(bar.data.decode("utf-8"), bar.type)
+        # cv2.putText(
+        #    frame, text, (x, y - 10), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (172, 172, 0), 2
+        # )
     return frame
 
 
